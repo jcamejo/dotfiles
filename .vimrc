@@ -45,9 +45,6 @@ Plug 'VundleVim/Vundle.vim'
 " Solarized Theme
 Plug 'lifepillar/vim-solarized8'
 
-"Close hidden Buffers
-Plug 'Asheq/close-buffers.vim'
-"
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.

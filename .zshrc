@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin::$PATH
+export PATH=$HOME/.pyenv/shims:$HOME/bin:/usr/local/bin:$HOME/.rvm/bin/rvm:/usr/local/opt/php@7.2/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -97,5 +97,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
-export PATH=$HOME/.rvm/bin/rvm:$PATH
 export EDITOR='nvim'
+# Python Version
+export PYENV_VERSION=3.8.1
