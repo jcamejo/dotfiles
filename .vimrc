@@ -25,8 +25,13 @@ set scrolloff=4
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-let mapleader=" "
+
+nnoremap <SPACE> <Nop>
+map <Space> <Leader>
+
+
 call plug#begin('~/.vim/plugged')
+
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
@@ -36,6 +41,8 @@ call plug#begin('~/.vim/plugged')
 " Sensible
 Plug 'tpope/vim-sensible'
 
+Plug 'drewtempelmeyer/palenight.vim'
+
 " Fugitive. git handler
 Plug 'tpope/vim-fugitive'
 
@@ -44,7 +51,6 @@ Plug 'VundleVim/Vundle.vim'
 
 " Solarized Theme
 Plug 'lifepillar/vim-solarized8'
-
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -151,6 +157,19 @@ Plug 'pangloss/vim-javascript'
 " Search
 Plug 'ggreer/the_silver_searcher'
 
+" Syntax formatter
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+
+" Html bindings
+Plug 'mattn/emmet-vim'
+
+
+let g:prettier#autoformat = 0
+nmap <Leader>p <Plug>(Prettier)
+
+"Insert new line without entering insert mode
+nmap <S-Enter> O<Esc>k
+" nmap <CR> o<Esc>k
 
 "nvim configuration
 if has("nvim")
@@ -180,8 +199,19 @@ let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
 
 " Colorscheme
-colorscheme solarized
+colorscheme palenight
 set background=dark
+
+let g:lightline = { 'colorscheme': 'palenight' }
+let g:airline_theme = 'palenight'
+
+if (has("nvim"))
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+
+if (has("termguicolors"))
+  set termguicolors
+endif
 
 " Forcing file detection
 autocmd BufNewFile,BufRead *.slim setlocal filetype=slim
@@ -247,7 +277,6 @@ set shiftwidth=2
 set shiftround
 set expandtab
 
-
 " editing tabs
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 autocmd FileType html setlocal ts=2 sts=2 sw=2
@@ -266,6 +295,7 @@ set tags+=gems.tags
 "clipboard sharing
 set clipboard=unnamed
 "
+noremap <leader>p <CTRL-W>g]
 
 " Go to tab
 noremap <leader>1 1gt
