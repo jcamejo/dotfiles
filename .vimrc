@@ -9,6 +9,11 @@ set hidden
 set ignorecase
 set bs=2
 set encoding=utf-8
+" Execute a vimrc if it's present in the working directory
+set exrc
+" To disable some dangerous commands of the local .vimrc file
+set secure
+
 
 if has('vim')
   packadd! matchit
