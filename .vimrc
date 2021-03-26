@@ -1,24 +1,27 @@
 set nocompatible              " be iMproved, required
-filetype off                  " required
-
+filetype on                  " required
 filetype plugin indent on    " required
+filetype plugin on
 
 set nonumber
 set rnu
 set hidden
 set ignorecase
+set autoindent
 set bs=2
 set encoding=utf-8
 " Execute a vimrc if it's present in the working directory
-set exrc
-" To disable some dangerous commands of the local .vimrc file
-set secure
 
+syntax on
 
 if has('vim')
   packadd! matchit
 else
   runtime! macros/matchit.vim
+endif
+
+if has("termguicolors")
+  set termguicolors
 endif
 "Matchit
 
@@ -27,18 +30,15 @@ set splitright
 " Mantaining lines below cursor
 set scrolloff=4
 
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-
-nnoremap <SPACE> <Nop>
-map <Space> <Leader>
-
-
+let mapleader=" "
 call plug#begin('~/.vim/plugged')
-
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
+
+" Solarized theme
+Plug 'altercation/vim-colors-solarized'
 
 " Lint Helper
 "Plug 'dense-analysis/ale'
@@ -46,6 +46,7 @@ call plug#begin('~/.vim/plugged')
 " Sensible
 Plug 'tpope/vim-sensible'
 
+"Colorscheme
 Plug 'drewtempelmeyer/palenight.vim'
 
 " Fugitive. git handler
@@ -53,9 +54,6 @@ Plug 'tpope/vim-fugitive'
 
 " let Vundle manage Vundle, required
 Plug 'VundleVim/Vundle.vim'
-
-" Solarized Theme
-Plug 'lifepillar/vim-solarized8'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -79,10 +77,16 @@ Plug 'tpope/vim-bundler'
 " Rbenv integration
 Plug 'tpope/vim-rbenv'
 
-let g:ctrlp_max_depth = 40
+" Neodark color Theme
+Plug 'KeitaNakamura/neodark.vim'
+
+"palenight terminal italics
+let g:palenight_terminal_italics=1
+
+let g:ctrlp_max_depth = 20
 let g:ctrlp_max_files = 0
 let g:ctrlp_custom_ignore = {
-			\ 'dir': 'tmp',
+			\ 'dir': '([\/](tmp|log|node_modules|\.git))$',
 			\ }
 " Matchparen limiters
 let g:matchparen_timeout = 2
@@ -124,11 +128,6 @@ Plug 'tpope/vim-endwise'
 " VIM sugar for UNIX shell commands
 Plug 'tpope/vim-eunuch'
 "
-" Autocompletion
-" Plugin 'ervandew/supertab'
-
-" Autocojmpletion
-" Plugin 'ajh17/VimCompletesMe'
 
 "Status line
 Plug 'itchyny/lightline.vim'
@@ -162,26 +161,26 @@ Plug 'pangloss/vim-javascript'
 " Search
 Plug 'ggreer/the_silver_searcher'
 
-" Syntax formatter
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+" Ctags update
+Plug 'ludovicchabant/vim-gutentags'
 
-" Html bindings
-Plug 'mattn/emmet-vim'
+" Autoclose
+Plug 'townk/vim-autoclose'
 
-
-let g:prettier#autoformat = 0
-nmap <Leader>p <Plug>(Prettier)
-
-"Insert new line without entering insert mode
-nmap <S-Enter> O<Esc>k
-" nmap <CR> o<Esc>k
-
+" Auto pair characters
+Plug 'jiangmiao/auto-pairs'
 "nvim configuration
 if has("nvim")
+  " Auto completion
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
 
 call plug#end()            " required
+
+set background=dark
+colorscheme palenight
+
 "
 " The Silver Searcher
 if executable('ag')
@@ -202,21 +201,6 @@ let g:deoplete#enable_at_startup = 1
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
-
-" Colorscheme
-colorscheme palenight
-set background=dark
-
-let g:lightline = { 'colorscheme': 'palenight' }
-let g:airline_theme = 'palenight'
-
-if (has("nvim"))
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-endif
-
-if (has("termguicolors"))
-  set termguicolors
-endif
 
 " Forcing file detection
 autocmd BufNewFile,BufRead *.slim setlocal filetype=slim
@@ -259,6 +243,9 @@ map <Leader>w :update<CR>
 " Shortcut for escape Shift Enter
 inoremap jj <Esc>
 
+" Place cursor between brackets
+" inoremap <expr> <cr> getline(".")[col(".")-2:col(".")-1]=="{}" ? "<cr><esc>O" : "<cr>"
+
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
 
@@ -277,10 +264,14 @@ nnoremap <leader>= :wincmd =<cr>
 " Removing the highlight search on escape
 nnoremap <esc> :noh<return><esc>
 
+" formatting on paste
+set pastetoggle=<F2>
+
 set tabstop=2
 set shiftwidth=2
 set shiftround
 set expandtab
+
 
 " editing tabs
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
@@ -288,8 +279,8 @@ autocmd FileType html setlocal ts=2 sts=2 sw=2
 autocmd FileType css setlocal ts=2 sts=2 sw=2
 autocmd FileType scss setlocal ts=2 sts=2 sw=2
 autocmd FileType json setlocal ts=2 sts=2 sw=2
-autocmd FileType javascript setlocal ts=2 sts=2 sw=2 syntax=on
-autocmd FileType yajl  setlocal ts=2 sts=2 sw=2
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType yajl  setlocal ts=2 sts=2 sw=2 autoindent=off
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 
 "undo commands
@@ -300,7 +291,6 @@ set tags+=gems.tags
 "clipboard sharing
 set clipboard=unnamed
 "
-noremap <leader>p <CTRL-W>g]
 
 " Go to tab
 noremap <leader>1 1gt
@@ -313,12 +303,23 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>0 :tablast<cr>
+
+" Tag navigation
 nnoremap <leader>. :CtrlPTag<cr>
 nnoremap <leader>, :CtrlPBufTag<cr>
+nnoremap <leader>ld :vsp ~/Dev/rails/masterpages/config/locales/de.yml<cr>
+nnoremap <leader>le :vsp ~/Dev/rails/masterpages/config/locales/en.yml<cr>
 
-" <TAB>: completion.
+" always indent current line
+nnoremap p ]p
+" If you don't want to format in the current line
+nnoremap <leader>p p
+
+
+"<TAB>: completion.
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " Macros
+
 let @c="oconsole.log();jjF(a''jjF'a"
 let @b="obinding.pryjj"
 let @p='oputs ""jji'
@@ -326,4 +327,3 @@ let @d="odebugger;jj"
 
 "Commands
 command! -nargs=1 PSearch vimgrep /<args>/gj **/*
-set nofoldenable
