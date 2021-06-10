@@ -86,7 +86,7 @@ let g:palenight_terminal_italics=1
 let g:ctrlp_max_depth = 20
 let g:ctrlp_max_files = 0
 let g:ctrlp_custom_ignore = {
-			\ 'dir': '([\/](tmp|log|node_modules|\.git))$',
+			\ 'dir': '\v[\/](tmp|log|node_modules|templates|bin|\.git)$',
 			\ }
 " Matchparen limiters
 let g:matchparen_timeout = 2
@@ -127,7 +127,6 @@ Plug 'tpope/vim-endwise'
 
 " VIM sugar for UNIX shell commands
 Plug 'tpope/vim-eunuch'
-"
 
 "Status line
 Plug 'itchyny/lightline.vim'
@@ -169,7 +168,14 @@ Plug 'townk/vim-autoclose'
 
 " Auto pair characters
 Plug 'jiangmiao/auto-pairs'
-"nvim configuration
+
+" locate rails locale
+Plug 'airblade/vim-localorie'
+
+" Formatter
+Plug 'sbdchd/neoformat'
+
+" nvim configuration
 if has("nvim")
   " Auto completion
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -207,6 +213,7 @@ autocmd BufNewFile,BufRead *.slim setlocal filetype=slim
 
 " Removing Trailing Whitespaces
 autocmd BufWritePre * :%s/\s\+$//e
+
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -254,6 +261,9 @@ nmap k gk
 nmap j gj
 nmap ,f :NERDTreeFind<CR>
 
+" Open vim config
+nnoremap <Leader>vc :vsp ~/.vimrc<CR>
+
 " Show hidden files NERDTree
 let NERDTreeShowHidden=1
 
@@ -272,7 +282,6 @@ set shiftwidth=2
 set shiftround
 set expandtab
 
-
 " editing tabs
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 autocmd FileType html setlocal ts=2 sts=2 sw=2
@@ -290,7 +299,6 @@ set tags+=gems.tags
 
 "clipboard sharing
 set clipboard=unnamed
-"
 
 " Go to tab
 noremap <leader>1 1gt
@@ -315,6 +323,9 @@ nnoremap p ]p
 " If you don't want to format in the current line
 nnoremap <leader>p p
 
+"localorie (Rails locale) mappings
+nnoremap <silent> <leader>lt :call localorie#translate()<CR>
+nnoremap <silent> <leader>lx :echo localorie#expand_key()<CR>
 
 "<TAB>: completion.
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -327,3 +338,4 @@ let @d="odebugger;jj"
 
 "Commands
 command! -nargs=1 PSearch vimgrep /<args>/gj **/*
+
