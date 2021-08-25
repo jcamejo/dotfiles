@@ -1,5 +1,4 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=/usr/local/git/bin:$HOME/bin:/usr/local/bin:$HOME/.rvm/bin/rvm:$PATH
 export PATH=$HOME/Dev/redis/redis-stable/src:/usr/local/opt/openresty/nginx/sbin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -95,11 +94,27 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-#
+alias zshconfig="nvim ~/.zshrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
+
+# heoku push to staging
+alias gpst="git push staging"
+alias gpp="git push production"
+alias hrcp="heroku run rails c --remote production"
+alias hrcst="heroku run rails c --remote staging"
+alias hlpt="heroku logs --remote production --tail"
+alias hlst="heroku logs --remote staging --tail"
+alias hbcp="heroku pg:backups:capture --remote production"
+alias hbdp="heroku pg:backups:download --remote production"
+alias hbcs="heroku pg:backups:capture --remote staging"
+alias hbds="heroku pg:backups:download --remote staging"
+
+alias rm="rm -iv"
+
 export EDITOR='nvim'
 
+# local bin
+export PATH=/usr/local/bin:$PATH
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -113,3 +128,21 @@ export PATH=/usr/local/opt/php@7.2/bin:$PATH
 export PYENV_VERSION=3.8.1
 export PYENV_ROOT=$HOME/.pyenv
 export PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+
+# Homebrew sbin
+export PATH="/usr/local/sbin:$PATH"
+
+# Postgres
+export PATH="/usr/local/Cellar/postgresql@12/12.6_1/bin:$PATH"
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# Path for CMake
+export PATH="/Applications/CMake.app/Contents/bin:$PATH"
+

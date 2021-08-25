@@ -172,8 +172,11 @@ Plug 'jiangmiao/auto-pairs'
 " locate rails locale
 Plug 'airblade/vim-localorie'
 
-" Formatter
-Plug 'sbdchd/neoformat'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['ruby']
+  \ }
+
 
 " nvim configuration
 if has("nvim")
@@ -261,6 +264,10 @@ nmap k gk
 nmap j gj
 nmap ,f :NERDTreeFind<CR>
 
+
+" Fomat ruby
+nmap <Leader>pr <Plug>(Prettier)
+
 " Open vim config
 nnoremap <Leader>vc :vsp ~/.vimrc<CR>
 
@@ -338,4 +345,3 @@ let @d="odebugger;jj"
 
 "Commands
 command! -nargs=1 PSearch vimgrep /<args>/gj **/*
-
