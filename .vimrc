@@ -172,6 +172,11 @@ Plug 'jiangmiao/auto-pairs'
 " locate rails locale
 Plug 'airblade/vim-localorie'
 
+" fuzzy finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim',
+
+
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['ruby']
@@ -187,10 +192,11 @@ endif
 
 call plug#end()            " required
 
+"Color scheme
+let g:solarized_visibility="high"
 set background=dark
-colorscheme palenight
+colorscheme solarized8
 
-"
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -345,3 +351,22 @@ let @d="odebugger;jj"
 
 "Commands
 command! -nargs=1 PSearch vimgrep /<args>/gj **/*
+
+" Wow configuration
+" current spec file
+nmap <leader>ct :call system('tmux split -h "wow \"bundle exec rspec ' . expand('%') . ' --format documentation; read\""')<CR>
+" spec under cursor
+nmap <leader>cs :call system('tmux split -h "wow \"bundle exec rspec ' . expand('%') . ':' . line('.') . ' --format documentation; read\""')<CR>
+
+" lightline specs
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             ['gitbranch', 'readonly', 'filename', 'modified' ]]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
+
