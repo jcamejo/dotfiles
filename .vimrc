@@ -10,7 +10,6 @@ set ignorecase
 set autoindent
 set bs=2
 set encoding=utf-8
-" Execute a vimrc if it's present in the working directory
 
 syntax on
 
@@ -274,6 +273,10 @@ nmap ,f :NERDTreeFind<CR>
 " Fomat ruby
 nmap <Leader>pr <Plug>(Prettier)
 
+" Git Fugitive
+nmap <Leader>gb :Git blame
+map z Iwc <Esc>lyawA><Esc>pa.log<CR>echo "HelloWorld"<Esc>jz
+
 " Open vim config
 nnoremap <Leader>vc :vsp ~/.vimrc<CR>
 
@@ -357,6 +360,11 @@ command! -nargs=1 PSearch vimgrep /<args>/gj **/*
 nmap <leader>ct :call system('tmux split -h "wow \"bundle exec rspec ' . expand('%') . ' --format documentation; read\""')<CR>
 " spec under cursor
 nmap <leader>cs :call system('tmux split -h "wow \"bundle exec rspec ' . expand('%') . ':' . line('.') . ' --format documentation; read\""')<CR>
+nmap <leader>ru :exe "! wow bundle exec rubocop " . expand("%")<CR>
+nmap <leader>ra :exe "! wow bundle exec rubocop -A " . expand("%")<CR>
+
+" FZF override
+nmap <C-P> :FZF<CR>
 
 " lightline specs
 let g:lightline = {
