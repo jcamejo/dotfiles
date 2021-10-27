@@ -19,9 +19,6 @@ else
   runtime! macros/matchit.vim
 endif
 
-if has("termguicolors")
-  set termguicolors
-endif
 "Matchit
 
 " set the vsplit on the right side
@@ -37,7 +34,7 @@ call plug#begin('~/.vim/plugged')
 "call vundle#begin('~/some/path/here')
 
 " Solarized theme
-Plug 'altercation/vim-colors-solarized'
+Plug 'overcache/NeoSolarized'
 
 " Lint Helper
 "Plug 'dense-analysis/ale'
@@ -93,9 +90,6 @@ let g:matchparen_insert_timeout = 2
 "
 " Matchparen
 let g:textobj_ruby_more_mappings = 1
-
-" Navigation
-Plug 'ctrlpvim/ctrlp.vim'
 
 " Project Browser
 Plug 'scrooloose/nerdtree'
@@ -154,27 +148,17 @@ Plug 'isRuslan/vim-es6'
 Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'jasonlong/vim-textobj-css'
-Plug 'pangloss/vim-javascript'
 
-" Search
-Plug 'ggreer/the_silver_searcher'
-
-" Ctags update
-Plug 'ludovicchabant/vim-gutentags'
-
-" Autoclose
-Plug 'townk/vim-autoclose'
-
-" Auto pair characters
-Plug 'jiangmiao/auto-pairs'
-
-" locate rails locale
-Plug 'airblade/vim-localorie'
-
-" fuzzy finder
+" Fuzzy finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim',
+Plug 'junegunn/fzf.vim'
 
+" Ability to pass arguments to AG and Rg
+Plug 'jesseleite/vim-agriculture'
+
+
+" definition finder
+Plug 'pechorin/any-jump.vim'
 
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
@@ -192,9 +176,9 @@ endif
 call plug#end()            " required
 
 "Color scheme
-let g:solarized_visibility="high"
+let g:neosolarized_visibility="high"
 set background=dark
-colorscheme solarized8
+colorscheme NeoSolarized
 
 " The Silver Searcher
 if executable('ag')
@@ -269,13 +253,26 @@ nmap k gk
 nmap j gj
 nmap ,f :NERDTreeFind<CR>
 
+" FZF mappings
+nnoremap <C-p> :FZF<CR>
+nnoremap <Leader>f :Rg<CR>
+nnoremap <leader>. :Tags<CR>
+nnoremap <leader>, :BTags<CR>
+nnoremap <leader>bc :BCommits<cr>
+nnoremap <leader>c :Commits<cr>
+nnoremap <leader>h :History<cr>
+nnoremap <leader>hc :History:<cr>
+nnoremap <leader>hs :History/<cr>
+
+" not search for filename in Rf command
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
 
 " Fomat ruby
 nmap <Leader>pr <Plug>(Prettier)
 
 " Git Fugitive
-nmap <Leader>gb :Git blame
-map z Iwc <Esc>lyawA><Esc>pa.log<CR>echo "HelloWorld"<Esc>jz
+nmap <Leader>gb :Git blame<CR>
 
 " Open vim config
 nnoremap <Leader>vc :vsp ~/.vimrc<CR>
@@ -329,8 +326,6 @@ noremap <leader>9 9gt
 noremap <leader>0 :tablast<cr>
 
 " Tag navigation
-nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <leader>, :CtrlPBufTag<cr>
 nnoremap <leader>ld :vsp ~/Dev/rails/masterpages/config/locales/de.yml<cr>
 nnoremap <leader>le :vsp ~/Dev/rails/masterpages/config/locales/en.yml<cr>
 
@@ -346,6 +341,9 @@ nnoremap <silent> <leader>lx :echo localorie#expand_key()<CR>
 "<TAB>: completion.
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " Macros
+
+" Git
+nnoremap <leader>gi :Git<cr>
 
 let @c="oconsole.log();jjF(a''jjF'a"
 let @b="obinding.pryjj"
@@ -363,10 +361,7 @@ nmap <leader>cs :call system('tmux split -h "wow \"bundle exec rspec ' . expand(
 nmap <leader>ru :exe "! wow bundle exec rubocop " . expand("%")<CR>
 nmap <leader>ra :exe "! wow bundle exec rubocop -A " . expand("%")<CR>
 
-" FZF override
-nmap <C-P> :FZF<CR>
-
-" lightline specs
+"lightline specs
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -377,4 +372,19 @@ let g:lightline = {
       \   'gitbranch': 'FugitiveHead'
       \ },
       \ }
+let g:any_jump_colors = {
+      \"plain_text":         "String",
+      \"preview":            "Comment",
+      \"preview_keyword":    "Operator",
+      \"heading_text":       "Function",
+      \"heading_keyword":    "Identifier",
+      \"group_text":         "Comment",
+      \"group_name":         "Function",
+      \"more_button":        "Operator",
+      \"more_explain":       "Comment",
+      \"result_line_number": "Comment",
+      \"result_text":        "Statement",
+      \"result_path":        "String",
+      \"help":               "Comment"
+      \}
 
