@@ -156,7 +156,6 @@ Plug 'junegunn/fzf.vim'
 " Ability to pass arguments to AG and Rg
 Plug 'jesseleite/vim-agriculture'
 
-
 " definition finder
 Plug 'pechorin/any-jump.vim'
 
@@ -165,6 +164,8 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['ruby']
   \ }
 
+" vcl files highlightning
+Plug 'fgsch/vim-varnish'
 
 " nvim configuration
 if has("nvim")
@@ -181,16 +182,16 @@ set background=dark
 colorscheme NeoSolarized
 
 " The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
+"if executable('ag')
+"  " Use ag over grep
+"  set grepprg=ag\ --nogroup\ --nocolor
+"
+"  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+"  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"
+"  " ag is fast enough that CtrlP doesn't need to cache
+"  let g:ctrlp_use_caching = 0
+"endif
 "
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -255,7 +256,7 @@ nmap ,f :NERDTreeFind<CR>
 
 " FZF mappings
 nnoremap <C-p> :FZF<CR>
-nnoremap <Leader>f :Rg<CR>
+nnoremap <Leader>f :Ag<CR>
 nnoremap <leader>. :Tags<CR>
 nnoremap <leader>, :BTags<CR>
 nnoremap <leader>bc :BCommits<cr>
@@ -265,8 +266,14 @@ nnoremap <leader>hc :History:<cr>
 nnoremap <leader>hs :History/<cr>
 
 " not search for filename in Rf command
-command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+" command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+" command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
+" https://github.com/junegunn/fzf.vim/issues/346
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%', '?'),
+  \                 <bang>0)
 
 " Fomat ruby
 nmap <Leader>pr <Plug>(Prettier)
@@ -372,19 +379,7 @@ let g:lightline = {
       \   'gitbranch': 'FugitiveHead'
       \ },
       \ }
-let g:any_jump_colors = {
-      \"plain_text":         "String",
-      \"preview":            "Comment",
-      \"preview_keyword":    "Operator",
-      \"heading_text":       "Function",
-      \"heading_keyword":    "Identifier",
-      \"group_text":         "Comment",
-      \"group_name":         "Function",
-      \"more_button":        "Operator",
-      \"more_explain":       "Comment",
-      \"result_line_number": "Comment",
-      \"result_text":        "Statement",
-      \"result_path":        "String",
-      \"help":               "Comment"
-      \}
 
+hi Pmenu cterm=NONE
+
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
