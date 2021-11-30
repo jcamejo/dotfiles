@@ -109,6 +109,10 @@ alias hbdp="heroku pg:backups:download --remote production"
 alias hbcs="heroku pg:backups:capture --remote staging"
 alias hbds="heroku pg:backups:download --remote staging"
 
+# carwow
+alias cw="wow carwow"
+alias cwr="wow carwow run"
+
 alias rm="rm -iv"
 
 export EDITOR='nvim'
@@ -135,15 +139,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
 
 # Path for CMake
 export PATH="/Applications/CMake.app/Contents/bin:$PATH"
-
-# Github access token
-export GITHUB_PACKAGES_TOKEN=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
-export BUNDLE_RUBYGEMS__PKG__GITHUB__COM=x-oauth-token:${GITHUB_PACKAGES_TOKEN}
 
 #python default version
 export PYENV_VERSION=3.9.7
@@ -153,6 +151,9 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 # python autocompletion enabled
 eval "$(pyenv init -)"
 
-
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/,.git/}"'
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
