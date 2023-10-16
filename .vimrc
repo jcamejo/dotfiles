@@ -10,8 +10,10 @@ set ignorecase
 set autoindent
 set bs=2
 set encoding=utf-8
+set list listchars=nbsp:⎵
+set colorcolumn=120
 
-syntax on
+syntax enable
 
 if has('vim')
   packadd! matchit
@@ -35,6 +37,9 @@ call plug#begin('~/.vim/plugged')
 
 " Solarized theme
 Plug 'overcache/NeoSolarized'
+
+" Dracula theme
+Plug 'dracula/vim', {'as': 'dracula'}
 
 " Lint Helper
 "Plug 'dense-analysis/ale'
@@ -121,6 +126,9 @@ Plug 'tpope/vim-endwise'
 " VIM sugar for UNIX shell commands
 Plug 'tpope/vim-eunuch'
 
+" vim fugitive helper
+Plug 'tpope/vim-rhubarb'
+
 "Status line
 Plug 'itchyny/lightline.vim'
 
@@ -156,9 +164,6 @@ Plug 'junegunn/fzf.vim'
 " Ability to pass arguments to AG and Rg
 Plug 'jesseleite/vim-agriculture'
 
-" definition finder
-Plug 'pechorin/any-jump.vim'
-
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['ruby']
@@ -166,6 +171,18 @@ Plug 'prettier/vim-prettier', {
 
 " vcl files highlightning
 Plug 'fgsch/vim-varnish'
+
+" autogenerate tags plugin
+Plug 'ludovicchabant/vim-gutentags'
+
+"autoclose pairs
+Plug 'Raimondi/delimitMate'
+
+" Startify
+Plug 'mhinz/vim-startify'
+
+" Terraform, mostly for highlightning
+Plug 'hashivim/vim-terraform'
 
 " nvim configuration
 if has("nvim")
@@ -177,9 +194,8 @@ endif
 call plug#end()            " required
 
 "Color scheme
-let g:neosolarized_visibility="high"
 set background=dark
-colorscheme NeoSolarized
+colorscheme dracula
 
 " The Silver Searcher
 "if executable('ag')
@@ -194,7 +210,7 @@ colorscheme NeoSolarized
 "endif
 "
 " bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 let g:deoplete#enable_at_startup = 1
 let g:javascript_plugin_jsdoc = 1
@@ -232,10 +248,10 @@ let g:ale_sign_warning = '⚠️'
 let g:ale_linters_explicit = 1
 "
 " RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+" map <Leader>t :call RunCurrentSpecFile()<CR>
+" map <Leader>s :call RunNearestSpec()<CR>
+" map <Leader>l :call RunLastSpec()<CR>
+" map <Leader>a :call RunAllSpecs()<CR>
 
 " Shortcut for saving
 map <Leader>w :update<CR>
@@ -304,6 +320,7 @@ set expandtab
 
 " editing tabs
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
+autocmd FileType elm setlocal ts=4 sts=4 sw=4
 autocmd FileType html setlocal ts=2 sts=2 sw=2
 autocmd FileType css setlocal ts=2 sts=2 sw=2
 autocmd FileType scss setlocal ts=2 sts=2 sw=2
@@ -360,13 +377,23 @@ let @d="odebugger;jj"
 "Commands
 command! -nargs=1 PSearch vimgrep /<args>/gj **/*
 
-" Wow configuration
 " current spec file
-nmap <leader>ct :call system('tmux split -h "wow \"bundle exec rspec ' . expand('%') . ' --format documentation; read\""')<CR>
+nmap <leader>ct :exe  system('tmux split -h "carwow run bundle exec rspec ' . expand('%') . ' --format documentation; read"')<CR>
 " spec under cursor
-nmap <leader>cs :call system('tmux split -h "wow \"bundle exec rspec ' . expand('%') . ':' . line('.') . ' --format documentation; read\""')<CR>
-nmap <leader>ru :exe "! wow bundle exec rubocop " . expand("%")<CR>
-nmap <leader>ra :exe "! wow bundle exec rubocop -A " . expand("%")<CR>
+nmap <leader>cs :call system('tmux split -h "carwow run bundle exec rspec ' . expand('%') . ':' . line('.') . ' --format documentation; read"')<CR>
+
+"nmap <leader>ru :exe "! carwow run bundle exec rubocop " . expand("%")<CR>
+"nmap <leader>ra :exe "! carwow run bundle exec rubocop -A " . expand("%")<CR>
+
+nmap <leader>ru :call system('tmux split -h "carwow run bundle exec rubocop ' . expand("%") . '; read"') <CR>
+nmap <leader>ra :call system('tmux split -h "carwow run bundle exec rubocop -A ' . expand("%") . '; read"') <CR>
+
+
+nmap <leader>gcc :call fzf#run({'source': 'git branch --format="%(if)%(HEAD)%(then)%(color:green)%(end)%(refname:short)" --color=always', 'sink': 'Git checkout', 'down': '30%', 'options': '--ansi' })<CR>
+
+nmap <leader>po :Git push origin HEAD<CR>
+
+
 
 "lightline specs
 let g:lightline = {
@@ -382,4 +409,3 @@ let g:lightline = {
 
 hi Pmenu cterm=NONE
 
-let g:fzf_preview_window = ['right:50%', 'ctrl-/']

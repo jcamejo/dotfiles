@@ -110,8 +110,8 @@ alias hbcs="heroku pg:backups:capture --remote staging"
 alias hbds="heroku pg:backups:download --remote staging"
 
 # carwow
-alias cw="wow carwow"
-alias cwr="wow carwow run"
+alias cw="carwow"
+alias cwr="carwow run"
 
 alias rm="rm -iv"
 
@@ -148,12 +148,29 @@ export PYENV_VERSION=3.9.7
 export PYENV_ROOT=$HOME/.pyenv
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-# python autocompletion enabled
+# python environment enabled
 eval "$(pyenv init -)"
+
+# Ruby environment
+eval "$(rbenv init - zsh)"
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# jcamejo github access token (Used in carwow)
+export GITHUB_PACKAGES_TOKEN=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
+
 #export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/,.git/}"'
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+function cg() {
+    rg -F $1 /Users/juan.camejo@carwow.es/Dev/carwow
+}
+
+PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
+PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
+PATH=$PATH:$HOME/.rvm/bin
+PATH=$PATH:$HOME/Dev/carwow/dev-environment/bin
+
+export PATH
+export HISTTIMEFORMAT="%d/%m/%y %T "
